@@ -2,10 +2,11 @@ package com.example.todoapp.controllers;
 
 import com.example.todoapp.domain.TodoItem;
 import com.example.todoapp.repositories.TodoItemRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,20 +14,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class TodoController implements CommandLineRunner {
 
     private final TodoItemRepository todoItemRepository;
 
-    public TodoController(TodoItemRepository todoItemRepository) {
-        this.todoItemRepository = todoItemRepository;
-    }
-
     @GetMapping
     public String index(Model model) {
-
         List<TodoItem> allTodos = todoItemRepository.findAll();
         model.addAttribute("allTodos", allTodos);
         model.addAttribute("newTodo", new TodoItem());
+
         return "index";
     }
 
@@ -36,15 +34,15 @@ public class TodoController implements CommandLineRunner {
         return "redirect:/";
     }
 
-    @PostMapping("/removeAll")
-        public String removeAllItems() {
-            todoItemRepository.deleteAll();
-            return "redirect:/";
-        }
-
     @PostMapping("/delete/{id}")
-    public String deleteTodoItem(@PathVariable("id") Long id) {
+    public String deleteTodo(@PathVariable("id") Long id) {
         todoItemRepository.deleteById(id);
+        return "redirect:/";
+    }
+
+    @PostMapping("/removeAll")
+    public String removeAllItems() {
+        todoItemRepository.deleteAll();
         return "redirect:/";
     }
 
