@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: v1-test-data
+      author: postgres
+      changes:
+        - insert:
+            tableName: todo_item
+            columns:
+              - column:
+                  name: id
+                  value: 3
+              - column:
+                  name: title
+                  value: "Item 3"
+        # Говорим базе, что следующий ID вместо 3 должен быть 4
+        - sql:
+            dbms: postgresql
+            sql: SELECT setval('todo_item_id_seq', (SELECT MAX(id) FROM todo_item));

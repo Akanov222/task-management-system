@@ -13,7 +13,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class TodoController implements CommandLineRunner {
+public class TodoController {
 
     private final TodoItemRepository todoItemRepository;
 
@@ -47,23 +47,11 @@ public class TodoController implements CommandLineRunner {
     @PostMapping("/search")
     public String searchTodoItems(@RequestParam ("searchTerm") String searchTerm, Model model) {
         List<TodoItem> allItems = todoItemRepository.findAll();
-        List<TodoItem> searchResults = new ArrayList<>();
-
-        for (TodoItem todoItem : allItems) {
-            if (todoItem.getTitle().toLowerCase().contains(searchTerm.toLowerCase())) {
-                searchResults.add(todoItem);
-            }
-        }
+        List<TodoItem> searchResults = todoItemRepository.findByTitleContainingIgnoreCase(searchTerm);
 
         model.addAttribute("allTodos", searchResults);
         model.addAttribute("newTodo", new TodoItem());
 
         return "index";
-    }
-
-    @Override
-    public void run(String... args) throws Exception {
-        todoItemRepository.save(new TodoItem("Item 1"));
-        todoItemRepository.save(new TodoItem("Item 2"));
     }
 }

@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: postgres
+      changes:
+        - createTable:
+            tableName: todo_item
+            columns:
+              - column:
+                  name: id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+        - insert:
+            tableName: todo_item
+            columns:
+              - column:
+                  name: title
+                  value: "Item 1"
+        - insert:
+            tableName: todo_item
+            columns:
+              - column:
+                  name: title
+                  value: "Item 2"
