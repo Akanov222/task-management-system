@@ -28,6 +28,13 @@
                 </li>
             </ul>
 
+            <form th:action="@{/search}" method="post" class="mb-3">
+                <div class="input-group">
+                    <input class="form-control" type="text" name="searchTerm" plaqcholder="Найти задачу">
+                    <button class="btn btn-outline-secondary" type="submit">Найти</button>
+                </div>
+            </form>
+
             <form th:action="@{removeAll}" method="post" class="text-center mb-4">
                 <button class="btn btn-danger" type="submit">Удалить все задачи</button>
             </form>

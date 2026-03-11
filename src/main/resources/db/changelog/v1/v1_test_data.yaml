@@ -1,0 +1,20 @@
+#  v1_test_data.yaml
+databaseChangeLog:
+  - changeSet:
+      id: v1-test-data
+      author: postgres
+      context: test
+      changes:
+        - insert:
+            tableName: todo_item
+            columns: { name: title, value: "Item 1"}
+        - insert:
+            tableName: todo_item
+            columns: { name: title, value: "Item 2"}
+        - insert:
+            tableName: todo_item
+            columns: { name: title, value: "Item 3" }
+        # Говорим базе, что следующий ID вместо 1 должен быть 4
+        - sql:
+            dbms: postgresql
+            sql: SELECT setval('todo_item_id_seq', (SELECT MAX(id) FROM todo_item));

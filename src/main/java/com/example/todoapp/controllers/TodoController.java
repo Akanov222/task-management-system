@@ -5,17 +5,15 @@ import com.example.todoapp.repositories.TodoItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class TodoController implements CommandLineRunner {
+public class TodoController {
 
     private final TodoItemRepository todoItemRepository;
 
@@ -46,9 +44,14 @@ public class TodoController implements CommandLineRunner {
         return "redirect:/";
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-        todoItemRepository.save(new TodoItem("Item 1"));
-        todoItemRepository.save(new TodoItem("Item 2"));
+    @PostMapping("/search")
+    public String searchTodoItems(@RequestParam ("searchTerm") String searchTerm, Model model) {
+        List<TodoItem> allItems = todoItemRepository.findAll();
+        List<TodoItem> searchResults = todoItemRepository.findByTitleContainingIgnoreCase(searchTerm);
+
+        model.addAttribute("allTodos", searchResults);
+        model.addAttribute("newTodo", new TodoItem());
+
+        return "index";
     }
 }
