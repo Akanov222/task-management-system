@@ -3,12 +3,10 @@ package com.example.todoapp.controllers;
 import com.example.todoapp.domain.TodoItem;
 import com.example.todoapp.repositories.TodoItemRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -46,7 +44,7 @@ public class TodoController {
 
     @PostMapping("/search")
     public String searchTodoItems(@RequestParam ("searchTerm") String searchTerm, Model model) {
-        List<TodoItem> allItems = todoItemRepository.findAll();
+        List<TodoItem> allTodos = todoItemRepository.findAll();
         List<TodoItem> searchResults = todoItemRepository.findByTitleContainingIgnoreCase(searchTerm);
 
         model.addAttribute("allTodos", searchResults);
